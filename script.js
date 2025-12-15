@@ -5,18 +5,18 @@ const description = document.getElementById('description');
 const disclaimer = document.getElementById('disclaimer');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const result = document.getElementById('result');
-const userText = document.getElementById('userText');
+const genderSelect = document.getElementById('genderSelect'); // <select> для пола
 
 // Тексты на двух языках
 const texts = {
     ru: {
-        description: "Этот сервис предназначен для анализа текста с использованием искусственного интеллекта. Он помогает структурировать мысли и задавать вопросы для саморефлексии.",
-        disclaimer: "Данный сервис не является психологической консультацией и не заменяет работу с психологом.",
+        description: "Сервис анализа текста ИИ. Структурируйте мысли и задавайте вопросы для саморефлексии.",
+        disclaimer: "Это не психологическая консультация и не заменяет работу с психологом.",
         analyzeBtn: "Проанализировать текст"
     },
     kz: {
-        description: "Бұл сервис мәтінді жасанды интеллект арқылы талдауға арналған. Ол ойларды құрылымдауға және өзін-өзі талдауға арналған сұрақтар қоюға көмектеседі.",
-        disclaimer: "Бұл сервис психологиялық кеңес бермейді және психологпен жұмыс жасаудың орнына алмайды.",
+        description: "Мәтінді жасанды интеллект арқылы талдау сервисі. Ойларды құрылымдауға және өзін-өзі талдауға арналған сұрақтар қойыңыз.",
+        disclaimer: "Бұл психологиялық кеңес емес және психологпен жұмысқа балама емес.",
         analyzeBtn: "Мәтінді талдау"
     }
 };
@@ -27,23 +27,23 @@ function setLanguage(lang) {
     disclaimer.textContent = texts[lang].disclaimer;
     analyzeBtn.textContent = texts[lang].analyzeBtn;
     result.textContent = '';
+    document.documentElement.lang = lang; // сохраняем язык для запроса
 }
 
 // События для кнопок языка
 ruBtn.addEventListener('click', () => setLanguage('ru'));
 kzBtn.addEventListener('click', () => setLanguage('kz'));
 
-// Отправка текста на сервер Flask с указанием языка и пола
+// Отправка текста на сервер Flask
 analyzeBtn.addEventListener("click", async () => {
-    const text = userText.value.trim();
-    if (!text) {
+    const text = document.getElementById("userText").value;
+    const lang = document.documentElement.lang || 'ru';
+    const gender = genderSelect ? genderSelect.value : 'any';
+
+    if (!text.trim()) {
         alert("Введите текст!");
         return;
     }
-
-    // Определяем язык страницы
-    const lang = document.documentElement.lang || 'ru';
-    const gender = 'any'; // можно заменить на 'male'/'female' или добавить поле ввода для пользователя
 
     try {
         const response = await fetch("/analyze", {
