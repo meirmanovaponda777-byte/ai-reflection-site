@@ -59,5 +59,3 @@ analyzeBtn.addEventListener("click", async () => {
         console.error(error);
     }
 });
-
-
