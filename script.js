@@ -1,4 +1,4 @@
-// Получаем элементы
+// Элементы страницы
 const ruBtn = document.getElementById('ruBtn');
 const kzBtn = document.getElementById('kzBtn');
 const description = document.getElementById('description');
@@ -9,30 +9,30 @@ const result = document.getElementById('result');
 // Тексты на двух языках
 const texts = {
     ru: {
-        description: "Этот сервис предназначен для анализа текста с использованием искусственного интеллекта. Он помогает структурировать мысли, обратить внимание на повторяющиеся темы и задать вопросы для саморефлексии.",
-        disclaimer: "Данный сервис не является психологической консультацией, не ставит диагнозы и не заменяет работу с психологом. Результаты анализа носят ознакомительный характер.",
+        description: "Этот сервис предназначен для анализа текста с использованием искусственного интеллекта. Он помогает структурировать мысли и задавать вопросы для саморефлексии.",
+        disclaimer: "Данный сервис не является психологической консультацией и не заменяет работу с психологом.",
         analyzeBtn: "Проанализировать текст"
     },
     kz: {
-        description: "Бұл сервис мәтінді жасанды интеллект арқылы талдауға арналған. Ол ойларды құрылымдауға, қайталанатын тақырыптарға назар аударуға және өзін-өзі талдауға арналған сұрақтар қоюға көмектеседі.",
-        disclaimer: "Бұл сервис психологиялық кеңес бермейді, диагноз қоймайды және психологпен жұмыс жасаудың орнына алмайды. Талдау нәтижелері тек танысу мақсатында.",
+        description: "Бұл сервис мәтінді жасанды интеллект арқылы талдауға арналған. Ол ойларды құрылымдауға және өзін-өзі талдауға арналған сұрақтар қоюға көмектеседі.",
+        disclaimer: "Бұл сервис психологиялық кеңес бермейді және психологпен жұмыс жасаудың орнына алмайды.",
         analyzeBtn: "Мәтінді талдау"
     }
 };
 
-// Функция переключения языка
+// Переключение языка
 function setLanguage(lang) {
     description.textContent = texts[lang].description;
     disclaimer.textContent = texts[lang].disclaimer;
     analyzeBtn.textContent = texts[lang].analyzeBtn;
-    result.textContent = ''; // обнуляем предыдущий результат
+    result.textContent = '';
 }
 
-// События на кнопки переключения языка
+// События для кнопок языка
 ruBtn.addEventListener('click', () => setLanguage('ru'));
 kzBtn.addEventListener('click', () => setLanguage('kz'));
 
-// Кнопка анализа текста через сервер Flask
+// Отправка текста на сервер Flask
 analyzeBtn.addEventListener("click", async () => {
     const text = document.getElementById("userText").value;
     if (!text.trim()) {
@@ -54,5 +54,4 @@ analyzeBtn.addEventListener("click", async () => {
         console.error(error);
     }
 });
-
 
