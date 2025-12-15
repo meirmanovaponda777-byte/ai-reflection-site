@@ -5,18 +5,18 @@ const description = document.getElementById('description');
 const disclaimer = document.getElementById('disclaimer');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const result = document.getElementById('result');
-const genderSelect = document.getElementById('genderSelect'); // <select> для пола
+const genderSelect = document.getElementById('genderSelect');
 
 // Тексты на двух языках
 const texts = {
     ru: {
-        description: "Сервис анализа текста ИИ. Структурируйте мысли и задавайте вопросы для саморефлексии.",
-        disclaimer: "Это не психологическая консультация и не заменяет работу с психологом.",
+        description: "Этот сервис предназначен для анализа текста с использованием искусственного интеллекта. Он помогает структурировать мысли и задавать вопросы для саморефлексии.",
+        disclaimer: "Данный сервис не является психологической консультацией и не заменяет работу с психологом.",
         analyzeBtn: "Проанализировать текст"
     },
     kz: {
-        description: "Мәтінді жасанды интеллект арқылы талдау сервисі. Ойларды құрылымдауға және өзін-өзі талдауға арналған сұрақтар қойыңыз.",
-        disclaimer: "Бұл психологиялық кеңес емес және психологпен жұмысқа балама емес.",
+        description: "Бұл сервис мәтінді жасанды интеллект арқылы талдауға арналған. Ол ойларды құрылымдауға және өзін-өзі талдауға арналған сұрақтар қоюға көмектеседі.",
+        disclaimer: "Бұл сервис психологиялық кеңес бермейді және психологпен жұмыс жасаудың орнына алмайды.",
         analyzeBtn: "Мәтінді талдау"
     }
 };
@@ -27,7 +27,7 @@ function setLanguage(lang) {
     disclaimer.textContent = texts[lang].disclaimer;
     analyzeBtn.textContent = texts[lang].analyzeBtn;
     result.textContent = '';
-    document.documentElement.lang = lang; // сохраняем язык для запроса
+    document.documentElement.lang = lang; // обновляем язык страницы
 }
 
 // События для кнопок языка
@@ -36,14 +36,14 @@ kzBtn.addEventListener('click', () => setLanguage('kz'));
 
 // Отправка текста на сервер Flask
 analyzeBtn.addEventListener("click", async () => {
-    const text = document.getElementById("userText").value;
-    const lang = document.documentElement.lang || 'ru';
-    const gender = genderSelect ? genderSelect.value : 'any';
-
-    if (!text.trim()) {
+    const text = document.getElementById("userText").value.trim();
+    if (!text) {
         alert("Введите текст!");
         return;
     }
+
+    const lang = document.documentElement.lang || 'ru';
+    const gender = genderSelect.value || 'any';
 
     try {
         const response = await fetch("/analyze", {
